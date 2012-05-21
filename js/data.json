@@ -1,0 +1,7 @@
+[
+{"latitude":90,"longitude":0, "label":"North"},
+{"latitude":-90,"longitude":0, "label":"South"},
+{"latitude":43.158111,"longitude":5.816545, "label":"North-west corner"},
+{"latitude":43.158111,"longitude":5.887270, "label":"North-east corner"},
+{"latitude":43.116272,"longitude":5.887270, "label":"South-east corner"},
+{"latitude":43.116272,"longitude":5.816545, "label":"South-west corner"}]
