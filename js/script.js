@@ -12,15 +12,19 @@ jQuery(document).ready(function ($) {
 
  function gotPosition(pos) {
      var here = {"latitude":pos.coords.latitude,"longitude":pos.coords.longitude};
-     $.getJSON("data.json", function(data) {
+     $.getJSON("js/data.json", function(data) {
        for (var i = 0 ; i < data.length; i++) {
-	   poi.push(projectedPOI(here,data[i]));
+	   var p = projectedPOI(here,data[i]);
+           console.log(p);
+	   poi.push(p);
        }
      });
 
  }
- navigator.getUserMedia({video:true}, gotCameraStream, errorWithCamera);
- navigator.getCurrentPosition(gotPosition);
+ if (navigator.getUserMedia) {
+    navigator.getUserMedia({video:true}, gotCameraStream, errorWithCamera);     
+ }
+ navigator.geolocation.getCurrentPosition(gotPosition);
  var ctx = document.getElementById("overlay").getContext("2d");
  ctx.fillStyle= "rgba(0,0,0,0.5)";
  ctx.fillRect(0,100,320,40);
@@ -36,10 +40,7 @@ jQuery(document).ready(function ($) {
    ctx.fillRect(0,100,320,40);
    ctx.fillStyle = "rgba(255,255,255,255)";
    for (var i =0 ; i<poi.length; i++) {
-     ctx.fillText("South",160 + ((e.alpha - 180) % 360)*16/9,120);
-     ctx.fillText("North",160 + (e.alpha % 360)*16/9,120);
-     ctx.fillText("East",160 + ((e.alpha - 90) % 360)*16/9,120);
-     ctx.fillText("West",160 + ((e.alpha - 270) % 360)*16/9,120);       
+     ctx.fillText(poi[i].label,160 + ((e.alpha - poi[i].angle) % 360)*16/9,120);
    }
  });
 });
