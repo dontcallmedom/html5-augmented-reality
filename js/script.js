@@ -23,6 +23,8 @@ jQuery(document).ready(function ($) {
      console.log(poi[i].distance + " " + maxDistance);
      console.log( (poi[i].distance/maxDistance) * (240-15));
    }
+    setOrientation(180);
+
      });
  }
  if (navigator.getUserMedia) {
@@ -56,7 +58,6 @@ jQuery(document).ready(function ($) {
      ctx.fillText(poi[i].label,x,y);
    }
  }
-    setOrientation(180);
  window.addEventListener("deviceorientation", function(e) {
      setOrientation(e.alpha);
  });
