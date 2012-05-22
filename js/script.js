@@ -33,8 +33,8 @@ jQuery(document).ready(function ($) {
  ctx.textAlign = "center";
  ctx.textBaseline = "middle";
  ctx.font="15px Arial";
- window.addEventListener("deviceorientation", function(e) {
-   $("#orientation").html(e.alpha);
+ function setOrientation(alpha) {
+   $("#orientation").html(alpha);
    ctx.clearRect(0,0,320,240);
    for (var i =0 ; i<poi.length; i++) {
      //ctx.fillStyle= "rgba(0,0,0,0.5)";
@@ -42,7 +42,7 @@ jQuery(document).ready(function ($) {
      ctx.fillStyle = "white";
      console.log(poi[i].distance + " " + maxDistance);
      // Based on direction of POI
-     var x = 160 + ((360 + e.alpha - poi[i].angle) % 360)*16/9;
+     var x = 160 + ((360 + alpha - poi[i].angle) % 360)*16/9;
      // Put text based on logarithmic scale of distance
      var y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
      ctx.beginPath();
@@ -55,5 +55,9 @@ jQuery(document).ready(function ($) {
      ctx.font="15px Arial";
      ctx.fillText(poi[i].label,x,y);
    }
+ }
+    setOrientation(180);
+ window.addEventListener("deviceorientation", function(e) {
+     setOrientation(e.alpha);
  });
 });
