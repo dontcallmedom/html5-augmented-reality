@@ -19,14 +19,17 @@ jQuery(document).ready(function ($) {
            maxDistance = Math.max(maxDistance, p.distance);
 	   poi.push(p);
        }
-   for (var i =0 ; i<poi.length; i++) {
-     console.log(poi[i].distance + " " + maxDistance);
-     console.log( (poi[i].distance/maxDistance) * (240-15));
-   }
-    setOrientation(180);
-
+       for (var i =0 ; i<poi.length; i++) {
+	   console.log(poi[i].distance + " " + maxDistance);
+	   console.log( (poi[i].distance/maxDistance) * (240-15));
+	   // Let's calculate the position on our overlay canvas
+           // based on logarithmic scale of distance
+	   poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
+       }
+       setOrientation(180);
      });
  }
+
  if (navigator.getUserMedia) {
     navigator.getUserMedia({video:true}, gotCameraStream, errorWithCamera);     
  }
@@ -39,14 +42,11 @@ jQuery(document).ready(function ($) {
    $("#orientation").html(alpha);
    ctx.clearRect(0,0,320,240);
    for (var i =0 ; i<poi.length; i++) {
-     //ctx.fillStyle= "rgba(0,0,0,0.5)";
-     //ctx.fillRect(0,100,320,40);
      ctx.fillStyle = "white";
-     console.log(poi[i].distance + " " + maxDistance);
      // Based on direction of POI
      var x = 160 + ((360 + alpha - poi[i].angle) % 360)*16/9;
-     // Put text based on logarithmic scale of distance
-     var y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
+
+     var y = poi[i].y;
      ctx.beginPath();
      ctx.moveTo(160,260);
      ctx.lineTo(x,y);
