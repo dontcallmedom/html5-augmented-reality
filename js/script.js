@@ -58,7 +58,11 @@ jQuery(document).ready(function ($) {
      ctx.fillText(poi[i].label,x,y);
    }
  }
+    count = 0;
  window.addEventListener("deviceorientation", function(e) {
-     setOrientation(e.alpha);
+     if (count % 40) {
+       setOrientation(e.alpha);
+     }
+     count ++ ;
  });
 });
