@@ -3,7 +3,17 @@ jQuery(document).ready(function ($) {
  var poi = [];
  var maxDistance = 0;
  function gotCameraStream(stream) {
-     cameraOutput.src = stream;
+      var source;
+     if (window.webkitURL) {
+	 source = window.webkitURL.createObjectURL(stream);
+     } else {
+	 source = stream; 
+     }
+     if (cameraOutput.srcObject) {
+	 cameraOutput.srcObject = stream;
+     } else {
+	 cameraOutput.src = stream;
+     }
      cameraOutput.play();     
  }
 
