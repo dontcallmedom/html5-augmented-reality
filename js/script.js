@@ -30,6 +30,9 @@ jQuery(document).ready(function ($) {
      });
  }
 
+ navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia ||
+navigator.webkitGetUserMedia || navigator.msGetUserMedia);
+
  if (navigator.getUserMedia) {
     navigator.getUserMedia({video:true}, gotCameraStream, errorWithCamera);     
  }
