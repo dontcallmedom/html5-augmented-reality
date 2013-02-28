@@ -44,7 +44,7 @@ jQuery(document).ready(function ($) {
 navigator.webkitGetUserMedia || navigator.msGetUserMedia);
 
  if (navigator.getUserMedia) {
-    navigator.getUserMedia({video:true}, gotCameraStream, errorWithCamera);     
+    navigator.getUserMedia({video:true, toString: function(){return 'video';}}, gotCameraStream, errorWithCamera);     
  }
  navigator.geolocation.getCurrentPosition(gotPosition);
  var ctx = document.getElementById("overlay").getContext("2d");
