@@ -9,8 +9,8 @@ jQuery(document).ready(function ($) {
      } else {
 	 source = stream; 
      }
-     if (cameraOutput.srcObject) {
-	 cameraOutput.srcObject = stream;
+     if (cameraOutput.mozSrcObject) {
+	 cameraOutput.mozSrcObject = stream;
      } else {
 	 cameraOutput.src = stream;
      }
