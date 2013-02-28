@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
      } else {
 	 source = stream; 
      }
-     if (video.mozCaptureStream) {
+     if (cameraOutput.mozCaptureStream) {
 	 cameraOutput.mozSrcObject = source;
      } else {
 	 cameraOutput.src = source;
