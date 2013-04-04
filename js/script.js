@@ -10,9 +10,9 @@ jQuery(document).ready(function ($) {
 	 source = stream; 
      }
      if (cameraOutput.mozSrcObject) {
-	 cameraOutput.mozSrcObject = stream;
+	 cameraOutput.mozSrcObject = source;
      } else {
-	 cameraOutput.src = stream;
+	 cameraOutput.src = source;
      }
      cameraOutput.play();     
  }
