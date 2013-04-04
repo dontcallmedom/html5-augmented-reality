@@ -30,8 +30,6 @@ jQuery(document).ready(function ($) {
 	   poi.push(p);
        }
        for (var i =0 ; i<poi.length; i++) {
-	   console.log(poi[i].distance + " " + maxDistance);
-	   console.log( (poi[i].distance/maxDistance) * (240-15));
 	   // Let's calculate the position on our overlay canvas
            // based on logarithmic scale of distance
 	   poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
