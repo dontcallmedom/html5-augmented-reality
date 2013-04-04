@@ -51,7 +51,8 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
  ctx.textAlign = "center";
  ctx.textBaseline = "middle";
  ctx.font="15px Arial";
- function setOrientation(alpha) {
+ var alpha = 0;
+ function setOrientation() {
    $("#orientation").html(alpha);
    ctx.clearRect(0,0,320,240);
    for (var i =0 ; i<poi.length; i++) {
@@ -70,12 +71,11 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
      ctx.font="15px Arial";
      ctx.fillText(poi[i].label,x,y);
    }
+   requestAnimationFrame(setOrientation);
  }
-    count = 0;
+ requestAnimationFrame(setOrientation);
+
  window.addEventListener("deviceorientation", function(e) {
-     if (count % 40) {
-       setOrientation(e.alpha);
-     }
-     count ++ ;
+     alpha = e.alpha;
  });
 });
