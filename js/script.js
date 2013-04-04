@@ -1,4 +1,3 @@
-jQuery(document).ready(function ($) {
  var cameraOutput = document.getElementById("camera");
  var poi = [];
  var maxDistance = 0;
@@ -19,24 +18,32 @@ jQuery(document).ready(function ($) {
  }
 
  function errorWithCamera(error) {
-     $("#error").html(error);
+     document.getElementById("error").appendChild(document.createTextNode(error));
  }
 
  function gotPosition(pos) {
      var here = {"latitude":pos.coords.latitude,"longitude":pos.coords.longitude};
-     $.getJSON("js/data.json", function(data) {
-       for (var i = 0 ; i < data.length; i++) {
-	   var p = projectedPOI(here,data[i]);
-           maxDistance = Math.max(maxDistance, p.distance);
-	   poi.push(p);
-       }
-       for (var i =0 ; i<poi.length; i++) {
-	   // Let's calculate the position on our overlay canvas
-           // based on logarithmic scale of distance
-	   poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
-       }
-       setOrientation(180);
-     });
+     var xhr = new XMLHttpRequest();
+     xhr.open("GET", "js/data.json", true);
+     xhr.onload = function() {
+	 try {
+	     var data = JSON.parse(xhr.responseText);
+	 } catch (e) {
+	     console.log(e);
+	 }
+	 for (var i = 0 ; i < data.length; i++) {
+	     var p = projectedPOI(here,data[i]);
+             maxDistance = Math.max(maxDistance, p.distance);
+	     poi.push(p);
+	 }
+	 for (var i =0 ; i<poi.length; i++) {
+	     // Let's calculate the position on our overlay canvas
+             // based on logarithmic scale of distance
+	     poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
+	 }
+	 setOrientation(180);
+     }
+     xhr.send();
  }
 
  navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia ||
@@ -51,8 +58,9 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
  ctx.textBaseline = "middle";
  ctx.font="15px Arial";
  var alpha = 0;
+ var orientationLogger = document.getElementById('orientation');
  function setOrientation() {
-   $("#orientation").html(alpha);
+   orientationLogger.innerHTML = alpha;
    ctx.clearRect(0,0,320,240);
    for (var i =0 ; i<poi.length; i++) {
      ctx.fillStyle = "white";
@@ -76,4 +84,3 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
  window.addEventListener("deviceorientation", function(e) {
      alpha = e.alpha;
  });
-});

@@ -1,8 +1,7 @@
 CACHE MANIFEST
-#v18
+#v31
 index.html
 css/ar.css
-js/jquery.min.js
 js/requestanimationframe.js
 js/geo-calc.js
 js/script.js
