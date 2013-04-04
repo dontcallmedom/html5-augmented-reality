@@ -21,8 +21,9 @@
      document.getElementById("error").appendChild(document.createTextNode(error));
  }
 
+ var here;
  function gotPosition(pos) {
-     var here = {"latitude":pos.coords.latitude,"longitude":pos.coords.longitude};
+     here = {"latitude":pos.coords.latitude,"longitude":pos.coords.longitude};
      var xhr = new XMLHttpRequest();
      xhr.open("GET", "js/data.json", true);
      xhr.onload = function() {
@@ -41,7 +42,9 @@
              // based on logarithmic scale of distance
 	     poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
 	 }
-	 setOrientation(180);
+	 if (alpha !== undefined) {
+  	   drawPOIInfo();
+         }
      }
      xhr.send();
  }
@@ -57,13 +60,16 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
  ctx.textAlign = "center";
  ctx.textBaseline = "middle";
  ctx.font="15px Arial";
- var alpha = 0;
+ ctx.fillStyle = "white";
+ ctx.strokeStyle = "white";
+
+ var alpha;
  var orientationLogger = document.getElementById('orientation');
- function setOrientation() {
+ var animation;
+ function drawPOIInfo() {
    orientationLogger.innerHTML = alpha;
    ctx.clearRect(0,0,320,240);
    for (var i =0 ; i<poi.length; i++) {
-     ctx.fillStyle = "white";
      // Based on direction of POI
      var x = 160 + ((360 + alpha - poi[i].angle) % 360)*16/9;
 
@@ -71,16 +77,18 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
      ctx.beginPath();
      ctx.moveTo(160,260);
      ctx.lineTo(x,y);
-     ctx.strokeStyle = "white";
      ctx.stroke();
      ctx.font="10px Arial";
      ctx.fillText(Math.floor(poi[i].distance / 100) / 10 + 'km',160 + (x - 160) / 2, 240 + (y - 240)/2);
      ctx.font="15px Arial";
      ctx.fillText(poi[i].label,x,y);
    }
-   requestAnimationFrame(setOrientation);
+   animation = requestAnimationFrame(drawPOIInfo);
  }
 
  window.addEventListener("deviceorientation", function(e) {
      alpha = e.alpha;
+     if (here !== undefined && animation !== undefined) {
+        drawPOIInfo()
+     }
  });
