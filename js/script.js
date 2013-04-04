@@ -6,6 +6,7 @@ jQuery(document).ready(function ($) {
       var source;
      if (window.webkitURL) {
 	 source = window.webkitURL.createObjectURL(stream);
+	 cameraOutput.autoplay = true;
      } else {
 	 source = stream; 
      }
