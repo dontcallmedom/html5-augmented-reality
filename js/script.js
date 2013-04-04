@@ -6,10 +6,11 @@ jQuery(document).ready(function ($) {
       var source;
      if (window.webkitURL) {
 	 source = window.webkitURL.createObjectURL(stream);
+	 cameraOutput.autoplay = true;
      } else {
 	 source = stream; 
      }
-     if (cameraOutput.mozCaptureStream) {
+     if (cameraOutput.mozSrcObject !== undefined) {
 	 cameraOutput.mozSrcObject = source;
      } else {
 	 cameraOutput.src = source;
@@ -30,8 +31,6 @@ jQuery(document).ready(function ($) {
 	   poi.push(p);
        }
        for (var i =0 ; i<poi.length; i++) {
-	   console.log(poi[i].distance + " " + maxDistance);
-	   console.log( (poi[i].distance/maxDistance) * (240-15));
 	   // Let's calculate the position on our overlay canvas
            // based on logarithmic scale of distance
 	   poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
@@ -73,7 +72,6 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
    }
    requestAnimationFrame(setOrientation);
  }
- requestAnimationFrame(setOrientation);
 
  window.addEventListener("deviceorientation", function(e) {
      alpha = e.alpha;
