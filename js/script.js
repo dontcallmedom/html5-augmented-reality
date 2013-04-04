@@ -42,9 +42,7 @@
              // based on logarithmic scale of distance
 	     poi[i].y = 240 - Math.log(poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (240-15)));
 	 }
-	 if (alpha !== undefined) {
-  	   drawPOIInfo();
-         }
+  	 drawPOIInfo();
      }
      xhr.send();
  }
@@ -63,7 +61,7 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
  ctx.fillStyle = "white";
  ctx.strokeStyle = "white";
 
- var alpha;
+ var alpha = 0;
  var orientationLogger = document.getElementById('orientation');
  var animation;
  function drawPOIInfo() {
@@ -88,7 +86,4 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
 
  window.addEventListener("deviceorientation", function(e) {
      alpha = e.alpha;
-     if (here !== undefined && animation !== undefined) {
-        drawPOIInfo()
-     }
  });
