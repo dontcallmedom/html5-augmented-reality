@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
      } else {
 	 source = stream; 
      }
-     if (cameraOutput.mozSrcObject) {
+     if (cameraOutput.mozSrcObject !== undefined) {
 	 cameraOutput.mozSrcObject = source;
      } else {
 	 cameraOutput.src = source;
