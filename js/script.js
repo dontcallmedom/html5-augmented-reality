@@ -71,7 +71,6 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
    }
    requestAnimationFrame(setOrientation);
  }
- requestAnimationFrame(setOrientation);
 
  window.addEventListener("deviceorientation", function(e) {
      alpha = e.alpha;
