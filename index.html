@@ -8,13 +8,17 @@
 </head>
 <body>
 <p id="orientation"></p>
+<p><label title=""><input id="twitter" placeholder="#hashtag to search for"></label><button id="fetch" disabled>Waiting for location info...</button>
 <div id="frame">
 <video id="camera" width=320 height=240></video>
 <canvas id="overlay" width=320 height=240></video>
 </div>
 <p id="error"></p>
 <script src="js/jquery.min.js"></script>
+<script src="js/requestanimationframe.js"></script>
 <script src="js/geo-calc.js"></script>
+<script src="js/raf.js"></script>
+<script src="js/geotweet.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>
