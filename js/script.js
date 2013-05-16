@@ -1,5 +1,5 @@
 
-var ar = new AugmentedRealityViewer(document.getElementById('camera'), function(here, callback) {
+var ar = new AugmentedRealityViewer(function(here, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "js/data.json", true);
     xhr.onload = function() { 
@@ -12,3 +12,4 @@ var ar = new AugmentedRealityViewer(document.getElementById('camera'), function(
     };
     xhr.send();
 });
+ar.setViewer(document.getElementById('camera'));
