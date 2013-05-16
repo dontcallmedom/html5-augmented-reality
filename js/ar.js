@@ -1,23 +1,36 @@
-var AugmentedRealityViewer = function(element, getPOI, options) {
+var AugmentedRealityViewer = function(getPOI, options) {
     var self = this;
     this.poi = [];
-    var maxDistance = 0, here;
-    this.viewer = element;
-    this.viewer.width = element.offsetWidth;
-    this.viewer.height = element.offsetHeight;
-    var container = document.createElement("div");
-    container.style.position = "relative";
-    container.style.marginTop = container.style.marginBottom = container.style.marginLeft = container.style.marginRight = container.style.paddingTop = container.style.paddingBottom = container.style.paddingLeft = container.style.paddingRight = 0;
-    var overlay = document.createElement("canvas");
-    overlay.width = this.viewer.width;
-    overlay.height = this.viewer.height;
-    overlay.style.position = 'absolute';
-    overlay.style.top = overlay.style.left = 0;
-    element.parentNode.replaceChild(container, element);
-    container.appendChild(this.viewer);
-    container.appendChild(overlay);
+    var maxDistance = 0, here, overlay, ctx;
+    this.viewer;
+    
+    this.setViewer = function (element) {
+	this.viewer = element;
+	this.viewer.width = element.offsetWidth;
+	this.viewer.height = element.offsetHeight;
+	this.viewer.style.backgroundColor = "black";
+	var container = document.createElement("div");
+	container.style.position = "relative";
+	container.style.marginTop = container.style.marginBottom = container.style.marginLeft = container.style.marginRight = container.style.paddingTop = container.style.paddingBottom = container.style.paddingLeft = container.style.paddingRight = 0;
 
-    var alpha = null;
+	overlay = document.createElement("canvas");
+	overlay.width = this.viewer.width;
+	overlay.height = this.viewer.height;
+	overlay.style.position = 'absolute';
+	overlay.style.top = overlay.style.left = 0;
+	element.parentNode.replaceChild(container, element);
+	container.appendChild(this.viewer);
+	container.appendChild(overlay);
+	console.log("hello viewer");
+	ctx = overlay.getContext("2d");
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.font="15px Arial";
+	ctx.fillStyle = "white";
+	ctx.strokeStyle = "white";
+    };
+
+    var alpha = null,  prevAlpha = null;
 
 
     this.addStream = function (stream) {
@@ -65,17 +78,6 @@ var AugmentedRealityViewer = function(element, getPOI, options) {
     this.setPosition = function (pos) {
 	here = {"latitude":pos.coords.latitude,"longitude":pos.coords.longitude};
 	getPOI(here, function (data) {
-	    /*	var xhr = new XMLHttpRequest();
-		xhr.open("GET", "js/data.json", true);
-
-		xhr.onload = function() { 
-		try {
-		var data = JSON.parse(xhr.responseText);
-		} catch (e) {
-		console.log(e);
-		}
-		xhr.send();
-	    */
 	    for (var i = 0 ; i < data.length; i++) {
 		var p = projectedPOI(here,data[i]);
 		maxDistance = Math.max(maxDistance, p.distance);
@@ -95,29 +97,26 @@ var AugmentedRealityViewer = function(element, getPOI, options) {
     }
 
 
-    var ctx = overlay.getContext("2d");
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font="15px Arial";
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
 
     var animation;
     function drawPOIInfo() {
-	ctx.clearRect(0,0,overlay.width,overlay.height);
-	for (var i =0 ; i<self.poi.length; i++) {
-	    // Based on direction of POI
-	    var x = overlay.width / 2 + ((360 + alpha - self.poi[i].angle) % 360)*16/9;
-	    
-	    var y = self.poi[i].y;
-	    ctx.beginPath();
-	    ctx.moveTo(overlay.width / 2, overlay.height * 1.1);
-	    ctx.lineTo(x,y);
-	    ctx.stroke();
-	    ctx.font="10px Arial";
-	    ctx.fillText(Math.floor(self.poi[i].distance / 100) / 10 + 'km',(overlay.width / 2) + (x - overlay.width) / 2, overlay.height + (y - overlay.height)/2);
-	    ctx.font="15px Arial";
-	    ctx.fillText(self.poi[i].label,x,y);
+	if (prevAlpha === null || Math.abs(alpha - prevAlpha) > 1) {
+	    prevAlpha = alpha;
+	    ctx.clearRect(0,0,overlay.width,overlay.height);
+	    for (var i =0 ; i<self.poi.length; i++) {
+		// Based on direction of POI
+		var x = overlay.width / 2 + ((360 + alpha - self.poi[i].angle) % 360)*16/9;
+		
+		var y = self.poi[i].y;
+		ctx.beginPath();
+		ctx.moveTo(overlay.width / 2, overlay.height * 1.1);
+		ctx.lineTo(x,y);
+		ctx.stroke();
+		ctx.font="10px Arial";
+		ctx.fillText(Math.floor(self.poi[i].distance / 100) / 10 + 'km',(overlay.width / 2) + (x - overlay.width) / 2, overlay.height + (y - overlay.height)/2);
+		ctx.font="15px Arial";
+		ctx.fillText(self.poi[i].label,x,y);
+	    }
 	}
 	animation = requestAnimationFrame(drawPOIInfo);
     }    
