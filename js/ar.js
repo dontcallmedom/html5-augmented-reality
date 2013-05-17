@@ -46,7 +46,7 @@ var AugmentedRealityViewer = function(getPOI, options) {
 	    self.viewer.src = source;
 	}
 	self.viewer.play();     
-
+	setPOIy();
     };
 
     function distance(pos1, pos2) {
@@ -81,12 +81,7 @@ var AugmentedRealityViewer = function(getPOI, options) {
 		maxDistance = Math.max(maxDistance, p.distance);
 		self.poi.push(p);
 	    }
-	    for (var i =0 ; i<self.poi.length; i++) {
-		// Let's calculate the position on our overlay canvas
-		// based on logarithmic scale of distance
-		self.poi[i].y = overlay.height - Math.log(self.poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (overlay.height-15)));
-	    }
-	    drawPOIInfo();
+	    setPOIy();
 	});
     };
 
@@ -94,6 +89,16 @@ var AugmentedRealityViewer = function(getPOI, options) {
 	alpha = newalpha;
     }
 
+    function setPOIy() {
+	if (here && self.viewer) {
+	    for (var i =0 ; i<self.poi.length; i++) {
+		// Let's calculate the position on our overlay canvas
+		// based on logarithmic scale of distance
+		self.poi[i].y = overlay.height - Math.log(self.poi[i].distance) / Math.log(Math.pow(maxDistance, 1/ (overlay.height-15)));
+	    }
+	    drawPOIInfo();
+	}
+    }
 
 
     var animation;
