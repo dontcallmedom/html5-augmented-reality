@@ -21,7 +21,6 @@ var AugmentedRealityViewer = function(getPOI, options) {
 	element.parentNode.replaceChild(container, element);
 	container.appendChild(this.viewer);
 	container.appendChild(overlay);
-	console.log("hello viewer");
 	ctx = overlay.getContext("2d");
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
@@ -71,7 +70,6 @@ var AugmentedRealityViewer = function(getPOI, options) {
 	var objNorth = {latitude:obj.latitude,longitude:here.longitude};
 	var dNorth = (here.latitude > obj.latitude ? - 1 : 1) * distance(here, objNorth);
 	var angle = (360 + (here.longitude > obj.longitude ? -1 : 1) * Math.acos(dNorth/d) * 180 / Math.PI) % 360;
-	console.log(angle);
 	return {distance:d, angle:angle, label:obj.label};
     }
     
