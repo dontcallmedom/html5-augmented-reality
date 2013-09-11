@@ -85,5 +85,5 @@ navigator.webkitGetUserMedia || navigator.msGetUserMedia);
  }
 
  window.addEventListener("deviceorientation", function(e) {
-     alpha = e.alpha;
+     alpha = (e.alpha + 180) % 360;
  });
